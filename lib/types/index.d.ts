@@ -1319,4 +1319,4 @@ export declare interface AniListStats {
     reviews: DayStats[]
 }
 
-export default Anilist;
+export = Anilist;
