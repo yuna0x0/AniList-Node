@@ -4,8 +4,8 @@
 
 /* =================== USAGE ===================
 
-    import anilist from 'anilist-node';
-    const Anilist = new anilist();
+    import AniList from 'anilist-node';
+    const anilist = new AniList();
 
  =============================================== */
 
@@ -13,7 +13,7 @@
  * The main class for AniList-Node
  * @since 1.0.0
  */
-export class Anilist {
+export class AniList {
 
     /**
      * Access AniList's user data.
@@ -25,7 +25,7 @@ export class Anilist {
     /**
      * Access a user's AniList list data.
      * @since 1.1.0
-     * @memberof Anilist
+     * @memberof AniList
      */
     lists: Lists;
 
@@ -175,12 +175,12 @@ declare class User {
 
     /**
 	 * [Requires Login] Update user settings
-	 * @param {UserOptions} options 
-	 * @returns {UserProfileOptions}
-	 * 
+	 * @param {UserOptionsInput} options
+	 * @returns {UserOptions}
+	 *
 	 * @since 1.10.0
 	 */
-	update(options: UserOptions): Promise<UserProfileOptions>;
+	update(options: UserOptionsInput): Promise<UserProfileOptions>;
 
     /**
 	 * [Requires Login] Follow/Unfollow a user
@@ -296,7 +296,13 @@ declare class People {
 	 */
     favouriteChar(id: number): Promise<Boolean>;
 
-    getBirthdayCharacter(page: number): Promise<PersonRelation[]>;
+    /**
+	 * Get all characters who's birthday is today
+	 * @param { Number } page - What page in the search to target. Defaults at 1.
+	 * @returns { PersonRelation[] }
+	 * @since 1.14.0
+	 */
+    getBirthdayCharacters(page?: number): Promise<PersonRelation[]>;
 
     /**
      * Fetch a staff entry by its AniList ID or their name.
@@ -314,7 +320,13 @@ declare class People {
 	 */
     favouriteStaff(id: number): Promise<Boolean>;
 
-    getBirthdayStaff(page: number): Promise<PersonRelation[]>;
+    /**
+	 * Get all staff entries who's birthday is today
+	 * @param { Number } page - What page in the search to target. Defaults at 1.
+	 * @returns { PersonRelation[] }
+	 * @since 1.14.0
+	 */
+    getBirthdayStaff(page?: number): Promise<PersonRelation[]>;
 }
 
 declare class Activity {
@@ -340,10 +352,35 @@ declare class Activity {
      */
     getUserActivity(user: number, page?: number, perPage?: number): Promise<Array<ListActivity | TextActivity | MessageActivity>>;
 
-    postText(text: string, id?:number): Promise<TextActivity>;
+    /**
+	 * [Require Login] Post a new text activity or update the activity with its ID
+	 * @param {String} text - The content of the activity.
+	 * @param {Number?} id - The AniList activity ID. Null to create, number for update
+	 *
+	 * @returns {TextActivity}
+	 * @since 1.11.0
+	 */
+    postText(text: string, id: number | null): Promise<TextActivity>;
 
-    postMessage(text: string, recipientId: number, isPrivate?:boolean, id?: number): Promise<MessageActivity>;
+    /**
+	 * [Require Login] Post a new message activity or update the activity with its ID
+	 * @param {String} text - The activity message text
+	 * @param {Number} recipientId - The target user to send the message to
+	 * @param {Boolean} isPrivate - Set to true if it is a private message
+	 * @param {Number?} id - AniList Activity ID. Null to create, number to update.
+	 *
+	 * @returns {MessageActivity}
+	 * @since 1.11.0
+	 */
+    postMessage(text: string, recipientId: number, isPrivate?:boolean, id: number | null): Promise<MessageActivity>;
 
+    /**
+	 * [Require Login] Delete the current authorized user's activity post
+	 * @param {Number} id - The AniList activity ID to delete
+	 *
+	 * @returns {Boolean} Returns true if successful
+	 * @since 1.11.0
+	 */
     delete(id: number): Promise<boolean>;
 }
 
@@ -428,10 +465,12 @@ declare class Recommendation {
     /**
      * Get AniList recommendations for a media.
      * @param { Number } mediaID The AniList media id
+     * @param { Number } page Target a specific page number for recommended.
+     * @param { Number } perPage Limits the page amount to a specific number. 25 is max as per AniList limits.
      * @returns { RecommendationList }
      * @since 1.8.0
      */
-    getList(mediaID: Number): Promise<RecommendationList>;
+    getList(mediaID: number, page?: number, perPage?: number): Promise<RecommendationList>;
 
     /**
      * Get an AniList recommendation via its ID
@@ -439,7 +478,7 @@ declare class Recommendation {
      * @returns { SingleRecommendation }
      * @since 1.8.0
      */
-    get(recommendID: Number): Promise<SingleRecommendation>;
+    get(recommendID: number): Promise<SingleRecommendation>;
 }
 
 declare class Thread {
@@ -469,7 +508,7 @@ declare class Thread {
 	 * @returns {ThreadComments[]}
 	 * @since 1.12.0
 	 */
-	getComments(id: number, page: number, perPage: number): Promise<ThreadComment[]>;
+	getComments(id: number, page?: number, perPage?: number): Promise<ThreadComment[]>;
 }
 
 export declare type MediaType = 'ANIME' | 'MANGA';
@@ -785,7 +824,7 @@ export declare interface UserOptions {
     displayAdultContent: boolean,
     airingNotifications: boolean,
     profileColor: string,
-    activityMergeTime: Number,
+    activityMergeTime: number,
     staffNameLanguage: UserStaffNameLanguage,
     notificationOptions: NotificationOptions[]
 }
@@ -800,7 +839,7 @@ export declare interface UserOptionsInput {
     displayAdultContent: boolean,
     airingNotifications: boolean,
     profileColor: string,
-    activityMergeTime: Number,
+    activityMergeTime: number,
     staffNameLanguage: UserStaffNameLanguage,
     notificationOptions: NotificationOptions[],
     timezone: string,
@@ -1202,8 +1241,8 @@ export declare interface RecommendationList {
 }
 
 export declare interface RecommendationEntry {
-    id: Number,
-    rating: Number,
+    id: number,
+    rating: number,
     userRating: RecommendationRating,
     user: UserRelation,
     mediaRecommendation: MediaRelation
@@ -1319,4 +1358,4 @@ export declare interface AniListStats {
     reviews: DayStats[]
 }
 
-export default Anilist;
+export default AniList;
