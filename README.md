@@ -6,7 +6,7 @@
 A simple, lightweight Node.js wrapper for the AniList API.
 
 ## Using Anilist-node
-To install: `npm install anilist-node`
+To install: `pnpm install anilist-node`
 
 You may need a token for some features (ie checking favourites). A token only needs to be generated once in order to use. To start, head to [Anilist's Developer Page](https://anilist.co/settings/developer) and click "Create New Client". Note the client id and place this URL into your client redirect `https://anilist.co/api/v2/oauth/pin`. This URL will allow you to get your token when authorizing. Then, copy paste this URL `https://anilist.co/api/v2/oauth/authorize?client_id={clientID}&response_type=token`, replacing the `{clientID}` with your client ID. It will ask you to log in and then provide you with the token to use.
 
@@ -14,7 +14,7 @@ You may need a token for some features (ie checking favourites). A token only ne
 
 ## Example
 ### General lookup search (no login):
-```javascript 
+```javascript
 const anilist = require('anilist-node');
 const Anilist = new anilist();
 
@@ -41,7 +41,7 @@ Documentation is provided in two locations. A static HTML site is available with
 
 ## Contributing
 
-Please refer to the [Contributing Guide](https://github.com/AurelicButter/AniList-Node/tree/master/.github/CONTRIBUTING.md) for more information. 
+Please refer to the [Contributing Guide](https://github.com/AurelicButter/AniList-Node/tree/master/.github/CONTRIBUTING.md) for more information.
 
 ## License and Contact
 AniList-Node is licensed under the [MIT License](LICENSE).
